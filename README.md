@@ -6,6 +6,10 @@
 ```
 $ sudo apt-get install python python-pip fabric
 ```
+#### Install Jinja for templating
+```
+$ pip install Jinja2
+```
 
 ## Running Fabric
 #### Install your favorite debian VM

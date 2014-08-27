@@ -11,9 +11,9 @@ $ sudo apt-get install python python-pip fabric
 #### Install your favorite debian VM
 #### Set up APT proxies in /etc/apt/apt.conf
 ```
-Acquire::http::Proxy "http:://proxy.jpmchase.net:8443";
-Acquire::https::Proxy "http:://proxy.jpmchase.net:8443";
-Acquire::ftp::Proxy "http:://proxy.jpmchase.net:8443";
+Acquire::http::Proxy "http:://myproxy:myport";
+Acquire::https::Proxy "http:://myproxy:myport";
+Acquire::ftp::Proxy "http:://myproxy:myport";
 ```
 #### Install openssh-server
 ```

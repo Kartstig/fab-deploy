@@ -3,3 +3,4 @@ packages/*
 templates/database.yml
 templates/servernames
 templates/tnsnames.ora
+config.conf

@@ -19,10 +19,10 @@ for s in config.sections():
     section[k] = v
   conf[s] = section 
 
-env.hosts = ['dev@10.129.141.109']
+env.hosts = ['herman@10.129.141.112']
 env.roledefs = {
-  'dev': ['dev@10.129.141.109'],
-  'db': ['oracle@10.129.141.109']
+  'dev': ['herman@10.129.141.112'],
+  'db': ['oracle@10.129.141.112']
 }
 
 def home():
@@ -215,6 +215,16 @@ def install_sqldeveloper():
   c = sudo('alien --scripts -i -d %s/sqldeveloper-4.0.2.15.21-1.noarch.rpm' % (conf['global']['package_dir']) )
   print (success(app) if c.succeeded else failed(app))
 
+def install_python():
+  app = "python dev"
+  dependencies = [
+  'python',
+  'python-pip',
+  'fabric',
+  ]
+  sudo(install(dependencies))
+  sudo('pip install virtualenv')
+
 def set_git_config():
   upload_template(
     filename='.gitconfig',
@@ -237,24 +247,24 @@ def copy_configs():
   put('packages/certs.tar.gz', '~/')
   # run('tar -xvzf ~/dev/rsam/certs/certs.tar.gz ~/dev/rsam/certs/')
   # run('tar -xvzf ~/dev/self_service/certs/certs.tar.gz ~/dev/self_service/certs/')
+  with settings(warn_only=True):
+    upload_template(
+      filename='database.yml',
+      destination='~/dev/rsam/config',
+      context=conf,
+      use_jinja=True,
+      template_dir='templates',
+      use_sudo=True
+    )
 
-  upload_template(
-    filename='database.yml',
-    destination='~/dev/rsam/config',
-    context=conf,
-    use_jinja=True,
-    template_dir='templates',
-    use_sudo=True
-  )
-
-  upload_template(
-    filename='database.yml',
-    destination='~/dev/self_service/config',
-    context=conf,
-    use_jinja=True,
-    template_dir='templates',
-    use_sudo=True
-  )
+    upload_template(
+      filename='database.yml',
+      destination='~/dev/self_service/config',
+      context=conf,
+      use_jinja=True,
+      template_dir='templates',
+      use_sudo=True
+    )
 
 def deploy():
   # Grab some data from user to build files
@@ -287,3 +297,4 @@ def deploy():
   clone_repos()
   copy_configs()
   remove_packages()
+  install_python()

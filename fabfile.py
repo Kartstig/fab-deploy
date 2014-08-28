@@ -180,7 +180,7 @@ def create_db_users():
   run('sqlplus / as SYSDBA < %s/user.sql' % (conf['global']['package_dir']) )
 
 def install_ruby():
-  app = "Ruby 1.9.3-p362"
+  app = "Ruby 1.9.3-p545"
   dependencies = [
     'gawk',
     'libreadline6-dev',
@@ -207,8 +207,8 @@ def install_ruby():
   run('source ~/.rvm/scripts/rvm')
   sudo(update())
   sudo(install(dependencies))
-  run('rvm install 1.9.3-p362')
-  run('rvm use 1.9.3-p362 --default')
+  run('rvm install 1.9.3-p545')
+  run('rvm use 1.9.3-p545 --default')
   print (success(app) if c.succeeded else failed(app))
 
 def install_sqldeveloper():

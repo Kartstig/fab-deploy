@@ -110,7 +110,10 @@ def install_dev_packages():
     'curl',
     'git',
     'gitk',
-    'fabric']))
+    'fabric',
+    'python',
+    'python-pip']
+  ))
   print (success(app) if c.succeeded else failed(app))
 
 def install_oracle():
@@ -219,16 +222,6 @@ def install_sqldeveloper():
   c = sudo('alien --scripts -i -d %s/sqldeveloper-4.0.2.15.21-1.noarch.rpm' % (conf['global']['package_dir']) )
   print (success(app) if c.succeeded else failed(app))
 
-def install_python():
-  app = "python dev"
-  dependencies = [
-  'python',
-  'python-pip',
-  'fabric',
-  ]
-  sudo(install(dependencies))
-  sudo('pip install virtualenv')
-
 def set_git_config():
   upload_template(
     filename='.gitconfig',
@@ -300,4 +293,3 @@ def deploy():
   clone_repos()
   copy_configs()
   remove_packages()
-  install_python()

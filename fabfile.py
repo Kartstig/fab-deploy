@@ -17,12 +17,15 @@ for s in config.sections():
   section = {}
   for k,v in config.items(s):
     section[k] = v
-  conf[s] = section 
+  conf[s] = section
 
-env.hosts = ['herman@10.129.141.112']
+conf['user_name'] = prompt("Enter your UNIX user name: ")
+conf['ip'] = prompt("Enter your target IP address: ")
+
+env.hosts = ['%s@%s' % (conf['user_name'], conf['ip'])]
 env.roledefs = {
-  'dev': ['herman@10.129.141.112'],
-  'db': ['oracle@10.129.141.112']
+  'dev': ['%s@%s' % (conf['user_name'], conf['ip'])],
+  'db': ['oracle@%s' % (conf['ip'])]
 }
 
 def home():
@@ -131,10 +134,11 @@ def install_oracle():
   put('templates/S01shm_load', '/etc/rc2.d', use_sudo=True)
   sudo('chmod 755 /etc/rc2.d/S01shm_load')
   reboot(wait=100)
+  copy_packages()
 
   with settings(warn_only=True):
     sudo('groupadd dba')
-    sudo('usermod -a -G dba %s' % (conf['first_name']) )
+    sudo('usermod -a -G dba %s' % (conf['user_name']) )
     sudo('ln -s /usr/bin/awk /bin/awk')
     run('mkdir /var/lock/subsys')
     run('touch /var/lock/subsys/listener')
@@ -271,10 +275,9 @@ def deploy():
   conf['email'] = prompt("Enter your JPMChase email address:")
   conf['first_name'] = prompt("Enter your first name: ").lower()
   conf['last_name'] = prompt("Enter your last name: ").lower()
-
   conf['sid'] = prompt("Enter your JPMChase SID:")
   conf['db_password'] = getpass("Please enter a new password for your local test database: ")
-
+  
   # Build some configuration
   conf['db_name'] = '%s_local' % conf['first_name']
 

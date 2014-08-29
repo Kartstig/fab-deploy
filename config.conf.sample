@@ -18,3 +18,10 @@ exports =       JDK_HOME=/usr/lib/jvm/java-1.7.0-openjdk-amd64,ORACLE_SID=XE,ORA
 
 [repos]
 fab-deploy =    https://github.com/Kartstig/fab-deploy.git
+
+[python]
+env_dir =       ~/.virtualenvs
+
+[python-bash]
+env_home =      export WORKON_HOME=~/.virtualenvs
+wrapper =       source /usr/local/bin/virtualenvwrapper.sh

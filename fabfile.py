@@ -263,6 +263,21 @@ def copy_configs():
       use_sudo=True
     )
 
+def install_python():
+  print "Installing python environment"
+  sudo(install(['python-pbr']))
+  sudo('pip install virtualenv --proxy {}'.format(conf['global']['proxy']))
+  sudo('pip install virtualenvwrapper --proxy {}'.format(conf['global']['proxy']))
+  run('mkdir {}'.format(conf['python']['env_dir']))
+  python_bash()
+
+def python_bash():
+  print "Adding python entries"
+  run(append('~/.bashrc', '\n#### PYTHON ####'))
+  for k in conf['python-bash']:
+    run(append('~/.bashrc', conf['python-bash'][k]))
+  run('source ~/.bashrc')
+
 def deploy():
   # Grab some data from user to build files
   conf['email'] = prompt("Enter your JPMChase email address:")
